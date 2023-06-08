@@ -66,5 +66,5 @@ void sendManchester(char* str, uint8_t len){
   }
 
   // finally scale all values to the right value
-  HAL_TIM_PWM_Start_DMA(&htim4, TIM_CHANNEL_4, (uint32_t *)MAN_DATA, manidx);
+  HAL_TIM_PWM_Start_DMA(&htim3, TIM_CHANNEL_3, (uint32_t *)MAN_DATA, manidx);
 }

@@ -19,7 +19,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
+#include "i2c.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -88,12 +90,15 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_TIM4_Init();
+  MX_I2C1_Init();
+  MX_I2C2_Init();
+  MX_TIM3_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
   // start PWM input measurement
-  HAL_TIM_IC_Start_IT(&htim4, TIM_CHANNEL_1);   // main channel
-  HAL_TIM_IC_Start(&htim4, TIM_CHANNEL_2);      // indirect channel
+  HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);   // main channel
+  HAL_TIM_IC_Start(&htim3, TIM_CHANNEL_2);      // indirect channel
 
   /* USER CODE END 2 */
 
@@ -102,15 +107,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
-    // send out the Manchester Coding data
-    char man_str[10] = "HalloWelt";
-    sendManchester(man_str, 10);
-
-    // wait until the Manchester Data is send out
-    // we can do other things in this time as well ...
-    while (!datasentflag){};
-    datasentflag = 0;
 
     /* USER CODE BEGIN 3 */
   }
