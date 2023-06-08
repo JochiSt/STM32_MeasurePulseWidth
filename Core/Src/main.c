@@ -107,6 +107,8 @@ int main(void)
     char man_str[10] = "HalloWelt";
     sendManchester(man_str, 10);
 
+    // wait until the Manchester Data is send out
+    // we can do other things in this time as well ...
     while (!datasentflag){};
     datasentflag = 0;
 
