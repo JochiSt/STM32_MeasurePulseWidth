@@ -1,6 +1,0 @@
-tim.c:31:6:MX_TIM4_Init	10
-tim.c:114:6:HAL_TIM_Base_MspInit	3
-tim.c:157:6:HAL_TIM_MspPostInit	2
-tim.c:183:6:HAL_TIM_Base_MspDeInit	2
-tim.c:215:6:HAL_TIM_IC_CaptureCallback	3
-tim.c:233:6:HAL_TIM_PWM_PulseFinishedCallback	1
