@@ -230,11 +230,4 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
   }
 }
 
-uint8_t datasentflag = 0;
-
-void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
-{
-  HAL_TIM_PWM_Stop_DMA(htim, TIM_CHANNEL_3);
-  datasentflag=1;
-}
 /* USER CODE END 1 */
