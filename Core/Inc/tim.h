@@ -36,7 +36,7 @@ extern TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN Private defines */
 #define PWM_MAX_CNT 255
-typedef uint8_t pwm_t;
+typedef uint16_t pwm_t;
 /* USER CODE END Private defines */
 
 void MX_TIM3_Init(void);
