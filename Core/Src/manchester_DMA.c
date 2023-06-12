@@ -8,8 +8,8 @@
 
 #include <stdio.h>
 
-#define MAN_HIGH  PWM_MAX_CNT+1
-#define MAN_LOW   0
+#define MAN_HIGH  250
+#define MAN_LOW   5
 
 /**
  * @addtogroup ManValues Defintion of the Manchester Zero and One
@@ -37,7 +37,10 @@ const pwm_t MAN_IDLE[MAN_IDLE_LENGTH] = { MAN_HIGH, MAN_LOW,\
 /// Number of required sync '0's before any bit can start
 /// definitions for the Manchester HEADER
 #define MAN_HEADER_LEN  8
-const pwm_t MAN_HEADER[MAN_HEADER_LEN] = {0, PWM_MAX_CNT, 0, PWM_MAX_CNT, 0, PWM_MAX_CNT, 0, PWM_MAX_CNT};
+const pwm_t MAN_HEADER[MAN_HEADER_LEN] = {MAN_LOW, MAN_HIGH,
+                                          MAN_LOW, MAN_HIGH,
+                                          MAN_LOW, MAN_HIGH,
+                                          MAN_LOW, MAN_HIGH};
 /** @} */
 
 enum man_state_t {
