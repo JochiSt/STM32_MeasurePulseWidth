@@ -35,14 +35,32 @@ const pwm_t MAN_IDLE[MAN_IDLE_LENGTH] = { PWM_MAX_CNT, 0,\
 const pwm_t MAN_HEADER[MAN_HEADER_LEN] = {0, PWM_MAX_CNT, 0, PWM_MAX_CNT, 0, PWM_MAX_CNT, 0, PWM_MAX_CNT};
 /** @} */
 
+enum man_state_t {
+    STATE_MAN_IDLE,
+    STATE_MAN_SEND,
+    STATE_MAN_ZERO,
+} man_state;
+
+struct{
+    uint8_t datasent  : 1;
+    uint8_t dataready : 1;
+} man_status;
+
 /// maximum 16 characters per transmission string
 #define MAX_STRING_LENGTH 16
 /// storage of the data to be send via Manchester
 pwm_t MAN_DATA[MAX_STRING_LENGTH * 2*8 + 2*MAN_HEADER_LEN];
+uint8_t manidx;
 
 void sendManchester(char* str, uint8_t len){
 
-  uint8_t manidx = 0;
+  // wait until the data is send out
+  while( ! man_status.datasent ){
+    HAL_Delay(100);
+  };
+
+  // reset the length indication value
+  manidx = 0;
 
   // first apply header
   for(uint8_t manbitidx=0; manbitidx<MAN_HEADER_LEN; manbitidx++){
@@ -76,6 +94,32 @@ void sendManchester(char* str, uint8_t len){
     manidx++;
   }
 
-  // finally scale all values to the right value
-  HAL_TIM_PWM_Start_DMA(&htim3, TIM_CHANNEL_3, (uint32_t *)MAN_DATA, manidx);
+  // finally indicate, that the data is ready to be send out
+  man_status.dataready = 1;
+  // there is no data sent out
+  man_status.datasent = 0;
+}
+
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+  // stop the data transfer
+  HAL_TIM_PWM_Stop_DMA(MAN_TIM_DMA);
+
+  // if the previous transfer was a data transfer, indicate, that the data has
+  // been send out
+  if( man_state == STATE_MAN_SEND){
+    man_status.datasent = 1;
+  }
+
+  // is there new data ready to be send?
+  // otherwise send out the idle pattern
+  if( man_status.dataready ){
+    man_status.dataready = 0;
+    HAL_TIM_PWM_Start_DMA(MAN_TIM_DMA, (uint32_t *)MAN_DATA, manidx);
+    man_state = STATE_MAN_SEND;
+  }else{
+    HAL_TIM_PWM_Start_DMA(MAN_TIM_DMA, (uint32_t *)MAN_IDLE, MAN_IDLE_LENGTH);
+    man_state = STATE_MAN_ZERO;
+  }
+
 }
