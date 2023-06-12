@@ -6,22 +6,25 @@
 #include "manchester_DMA.h"
 #include "tim.h"
 
+#define MAN_HIGH  PWM_MAX_CNT+1
+#define MAN_LOW   0
+
 /**
  * @addtogroup ManValues Defintion of the Manchester Zero and One
  * @{
  */
-const pwm_t MAN_ONE[2] = {0,PWM_MAX_CNT};
-const pwm_t MAN_ZERO[2] = {PWM_MAX_CNT, 0};
+const pwm_t MAN_ONE[2] = {MAN_LOW,PWM_MAX_CNT};
+const pwm_t MAN_ZERO[2] = {PWM_MAX_CNT, MAN_LOW};
 
 #define MAN_IDLE_LENGTH 16
-const pwm_t MAN_IDLE[MAN_IDLE_LENGTH] = { PWM_MAX_CNT, 0,\
-                                          PWM_MAX_CNT, 0,\
-                                          PWM_MAX_CNT, 0,\
-                                          PWM_MAX_CNT, 0,\
-                                          PWM_MAX_CNT, 0,\
-                                          PWM_MAX_CNT, 0,\
-                                          PWM_MAX_CNT, 0,\
-                                          PWM_MAX_CNT, 0\
+const pwm_t MAN_IDLE[MAN_IDLE_LENGTH] = { MAN_HIGH, MAN_LOW,\
+                                          MAN_HIGH, MAN_LOW,\
+                                          MAN_HIGH, MAN_LOW,\
+                                          MAN_HIGH, MAN_LOW,\
+                                          MAN_HIGH, MAN_LOW,\
+                                          MAN_HIGH, MAN_LOW,\
+                                          MAN_HIGH, MAN_LOW,\
+                                          MAN_HIGH, MAN_LOW\
                                           };
 /** @} */
 
