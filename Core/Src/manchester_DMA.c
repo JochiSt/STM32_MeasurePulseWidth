@@ -65,6 +65,7 @@ void initManchester(){
   man_status.datasent = 1;
 
   man_state = STATE_MAN_IDLE;
+  HAL_TIM_PWM_Start_DMA(MAN_TIM_DMA, (uint32_t *)MAN_IDLE, MAN_IDLE_LENGTH);
 }
 
 void sendManchester(char* str, uint8_t len){
