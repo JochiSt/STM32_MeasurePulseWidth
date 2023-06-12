@@ -35,8 +35,6 @@ extern "C" {
 extern TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN Private defines */
-extern uint8_t datasentflag;
-
 #define PWM_MAX_CNT 255
 typedef uint8_t pwm_t;
 /* USER CODE END Private defines */
