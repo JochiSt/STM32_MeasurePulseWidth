@@ -12,6 +12,17 @@
  */
 const pwm_t MAN_ONE[2] = {0,PWM_MAX_CNT};
 const pwm_t MAN_ZERO[2] = {PWM_MAX_CNT, 0};
+
+#define MAN_IDLE_LENGTH 16
+const pwm_t MAN_IDLE[MAN_IDLE_LENGTH] = { PWM_MAX_CNT, 0,\
+                                          PWM_MAX_CNT, 0,\
+                                          PWM_MAX_CNT, 0,\
+                                          PWM_MAX_CNT, 0,\
+                                          PWM_MAX_CNT, 0,\
+                                          PWM_MAX_CNT, 0,\
+                                          PWM_MAX_CNT, 0,\
+                                          PWM_MAX_CNT, 0\
+                                          };
 /** @} */
 
 /**
