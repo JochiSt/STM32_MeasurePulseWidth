@@ -6,6 +6,8 @@
 #include "manchester_DMA.h"
 #include "tim.h"
 
+#include <stdio.h>
+
 #define MAN_HIGH  PWM_MAX_CNT+1
 #define MAN_LOW   0
 
@@ -56,6 +58,9 @@ pwm_t MAN_DATA[MAX_STRING_LENGTH * 2*8 + 2*MAN_HEADER_LEN];
 uint8_t manidx;
 
 void initManchester(){
+
+  printf("init Manchester\r\n");
+
   man_status.dataready = 0;
   man_status.datasent = 1;
 
@@ -67,6 +72,7 @@ void sendManchester(char* str, uint8_t len){
   // wait until the data is send out
   while( ! man_status.datasent ){
     HAL_Delay(100);
+    printf("waiting for data to be send out\r\n");
   };
 
   // reset the length indication value
