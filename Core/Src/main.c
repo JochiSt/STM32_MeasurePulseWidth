@@ -26,6 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 #include "manchester_DMA.h"
 /* USER CODE END Includes */
 
@@ -103,6 +104,8 @@ int main(void)
 
   initManchester();
 
+
+  printf("Everything initialised...\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,6 +114,8 @@ int main(void)
   {
 
     HAL_Delay(1000);
+
+    printf("Send Manchester\r\n");
 
     // send test messages
     sendManchester("HalloWelt", 9);
