@@ -13,6 +13,7 @@
 /// TIM DMA settings
 #define MAN_TIM_DMA &htim3, TIM_CHANNEL_3
 
+void initManchester();
 void sendManchester(char* str, uint8_t len);
 
 #endif /* INC_MANCHESTER_DMA_H_ */

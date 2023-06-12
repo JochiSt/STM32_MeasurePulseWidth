@@ -52,6 +52,13 @@ struct{
 pwm_t MAN_DATA[MAX_STRING_LENGTH * 2*8 + 2*MAN_HEADER_LEN];
 uint8_t manidx;
 
+void initManchester(){
+  man_status.dataready = 0;
+  man_status.datasent = 1;
+
+  man_state = STATE_MAN_IDLE;
+}
+
 void sendManchester(char* str, uint8_t len){
 
   // wait until the data is send out

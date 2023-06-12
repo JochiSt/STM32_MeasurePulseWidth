@@ -100,6 +100,9 @@ int main(void)
   HAL_TIM_IC_Start_IT(&htim3, TIM_CHANNEL_1);   // main channel
   HAL_TIM_IC_Start(&htim3, TIM_CHANNEL_2);      // indirect channel
 
+
+  initManchester();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
