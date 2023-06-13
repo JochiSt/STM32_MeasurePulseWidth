@@ -7,27 +7,33 @@
 #include "tim.h"
 
 #include <stdio.h>
+#include <string.h>
 
-#define MAN_HIGH  250
-#define MAN_LOW   5
+#define MAN_HIGH  200
+#define MAN_LOW   50
 
 /**
  * @addtogroup ManValues Defintion of the Manchester Zero and One
  * @{
  */
-const pwm_t MAN_ONE[2] = {MAN_LOW,PWM_MAX_CNT};
-const pwm_t MAN_ZERO[2] = {PWM_MAX_CNT, MAN_LOW};
+#define BIT_LENGTH  1
+const pwm_t MAN_ONE[BIT_LENGTH] = {MAN_LOW};
+const pwm_t MAN_ZERO[BIT_LENGTH] = {MAN_HIGH};
 
-#define MAN_IDLE_LENGTH 16
+#define MAN_IDLE_LENGTH 2*6
+/*
 const pwm_t MAN_IDLE[MAN_IDLE_LENGTH] = { MAN_HIGH, MAN_LOW,\
+                                          MAN_LOW, MAN_HIGH,\
                                           MAN_HIGH, MAN_LOW,\
+                                          MAN_LOW, MAN_HIGH,\
                                           MAN_HIGH, MAN_LOW,\
-                                          MAN_HIGH, MAN_LOW,\
-                                          MAN_HIGH, MAN_LOW,\
-                                          MAN_HIGH, MAN_LOW,\
-                                          MAN_HIGH, MAN_LOW,\
-                                          MAN_HIGH, MAN_LOW\
+                                          MAN_LOW, MAN_HIGH,\
+                                          MAN_HIGH, MAN_HIGH,\
+                                          MAN_LOW, MAN_LOW\
                                           };
+*/
+pwm_t MAN_IDLE[MAN_IDLE_LENGTH];
+
 /** @} */
 
 /**
@@ -67,12 +73,23 @@ void initManchester(){
   man_status.dataready = 0;
   man_status.datasent = 1;
 
+  // create idle pattern
+  //
+  for(uint8_t offset = 0; offset < MAN_IDLE_LENGTH/2; offset+=BIT_LENGTH) {
+    memcpy((void*)&MAN_IDLE[offset], (void*)&MAN_ONE, BIT_LENGTH);
+  }
+  for(uint8_t offset = MAN_IDLE_LENGTH/2; offset < MAN_IDLE_LENGTH; offset+=BIT_LENGTH) {
+    memcpy((void*)&MAN_IDLE[offset], (void*)&MAN_ZERO, BIT_LENGTH);
+  }
+
   man_state = STATE_MAN_IDLE;
+  //HAL_TIM_PWM_Start_DMA(MAN_TIM_DMA, (uint32_t *)MAN_ONE, BIT_LENGTH);
   HAL_TIM_PWM_Start_DMA(MAN_TIM_DMA, (uint32_t *)MAN_IDLE, MAN_IDLE_LENGTH);
 }
 
 void sendManchester(char* str, uint8_t len){
 
+  printf("sending ... \r\n");
   // wait until the data is send out
   while( ! man_status.datasent ){
     HAL_Delay(100);
@@ -122,8 +139,9 @@ void sendManchester(char* str, uint8_t len){
 
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
+  /*
   // stop the data transfer
-  HAL_TIM_PWM_Stop_DMA(MAN_TIM_DMA);
+  //HAL_TIM_PWM_Stop_DMA(MAN_TIM_DMA);
 
   // if the previous transfer was a data transfer, indicate, that the data has
   // been send out
@@ -141,5 +159,5 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
     HAL_TIM_PWM_Start_DMA(MAN_TIM_DMA, (uint32_t *)MAN_IDLE, MAN_IDLE_LENGTH);
     man_state = STATE_MAN_ZERO;
   }
-
+  */
 }
